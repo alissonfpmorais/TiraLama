@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">TiraLama</string>
+    <string name="user_hint">Usuário</string>
+    <string name="pass_hint">Senha</string>
+    <string name="login_button_text">Entrar</string>
+    <string name="register_button_text">Registrar</string>
+</resources>
