@@ -28,7 +28,7 @@ class AuthActivity : MobiusActivity<AuthModel, AuthEvent, AuthEffect>() {
     }
 
     override fun getViewModel(activity: AppCompatActivity): CustomViewModel<AuthModel> =
-        ViewModelProviders.of(this).get(AuthViewModel::class.java)
+        ViewModelProviders.of(activity).get(AuthViewModel::class.java)
 
     override fun uiHandler(modelStream: Observable<AuthModel>): Observable<AuthEvent> {
         val modelDisposable = modelStream

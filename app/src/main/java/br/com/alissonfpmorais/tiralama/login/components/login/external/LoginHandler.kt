@@ -10,7 +10,7 @@ fun loginHandler(activity: AppCompatActivity): (Observable<LoginEffect>) -> (Obs
     return fun (effectStream: Observable<LoginEffect>): Observable<LoginEvent> {
         return effectStream.flatMap { loginEffect ->
             when (loginEffect) {
-                is AttemptToLogin -> onAttemptToLogin()
+                is AttemptToLogin -> onAttemptToLogin(loginEffect.username, loginEffect.password)
                 is NavigateToMainScreen -> onNavigateToMainScreen(activity)
                 is NavigateToRegisterScreen -> onNavigateToRegisterScreen(activity)
             }
@@ -18,7 +18,7 @@ fun loginHandler(activity: AppCompatActivity): (Observable<LoginEffect>) -> (Obs
     }
 }
 
-fun onAttemptToLogin(): Observable<LoginEvent> {
+fun onAttemptToLogin(username: String, password: String): Observable<LoginEvent> {
     Log.d("loginHandler", "AttemptToLogin")
     TODO()
 }

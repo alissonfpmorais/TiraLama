@@ -23,7 +23,7 @@ abstract class MobiusFragment<M, E, F> : Fragment() {
 
         controller.connect(RxConnectables.fromTransformer(this::uiHandler))
 
-        if (!isViewModelInitialized()) viewModel = getViewModel(activity as AppCompatActivity)
+        if (!isViewModelInitialized()) viewModel = getViewModel(this)
 
         viewModel.getLiveData().observe(this,
                 Observer { model ->
@@ -49,7 +49,7 @@ abstract class MobiusFragment<M, E, F> : Fragment() {
         if (!disposables.isDisposed && disposables.size() > 0) disposables.dispose()
     }
 
-    abstract fun getViewModel(activity: AppCompatActivity): CustomViewModel<M>
+    abstract fun getViewModel(fragment: Fragment): CustomViewModel<M>
 
     abstract fun uiHandler(modelStream: Observable<M>): Observable<E>
 
