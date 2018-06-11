@@ -1,7 +1,9 @@
 package br.com.alissonfpmorais.tiralama.common
 
 import android.arch.lifecycle.Observer
+import android.content.Intent
 import android.os.Bundle
+import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import com.spotify.mobius.MobiusLoop
 import com.spotify.mobius.rx2.RxConnectables
@@ -14,8 +16,6 @@ abstract class MobiusActivity<M, E, F> : AppCompatActivity() {
     abstract val loop: MobiusLoop.Builder<M, E, F>
 
     abstract val controller: MobiusLoop.Controller<M, E>
-
-    val disposables: CompositeDisposable = CompositeDisposable()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,7 +45,6 @@ abstract class MobiusActivity<M, E, F> : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         controller.disconnect()
-        if (!disposables.isDisposed && disposables.size() > 0) disposables.dispose()
     }
 
     abstract fun getViewModel(activity: AppCompatActivity): CustomViewModel<M>

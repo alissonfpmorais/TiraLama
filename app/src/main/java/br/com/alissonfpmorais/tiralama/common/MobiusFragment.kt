@@ -4,26 +4,30 @@ import android.arch.lifecycle.Observer
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
+import android.view.View
 import com.spotify.mobius.MobiusLoop
 import com.spotify.mobius.rx2.RxConnectables
 import io.reactivex.Observable
-import io.reactivex.disposables.CompositeDisposable
 
 abstract class MobiusFragment<M, E, F> : Fragment() {
     lateinit var viewModel: CustomViewModel<M>
 
-    abstract val loop: MobiusLoop.Builder<M, E, F>
-
-    abstract val controller: MobiusLoop.Controller<M, E>
-
-    val disposables: CompositeDisposable = CompositeDisposable()
+    private lateinit var controller: MobiusLoop.Controller<M, E>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        retainInstance = true
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val loop: MobiusLoop.Builder<M, E, F> = getMobiusLoop(activity as AppCompatActivity)
+        controller = getMobiusController(loop)
 
         controller.connect(RxConnectables.fromTransformer(this::uiHandler))
 
-        if (!isViewModelInitialized()) viewModel = getViewModel(this)
+        if (!isViewModelInitialized()) viewModel = getViewModel(activity as AppCompatActivity)
 
         viewModel.getLiveData().observe(this,
                 Observer { model ->
@@ -35,6 +39,7 @@ abstract class MobiusFragment<M, E, F> : Fragment() {
 
     override fun onResume() {
         super.onResume()
+        init(controller.model)
         controller.start()
     }
 
@@ -46,12 +51,17 @@ abstract class MobiusFragment<M, E, F> : Fragment() {
     override fun onDestroy() {
         super.onDestroy()
         controller.disconnect()
-        if (!disposables.isDisposed && disposables.size() > 0) disposables.dispose()
     }
 
-    abstract fun getViewModel(fragment: Fragment): CustomViewModel<M>
+    abstract fun getMobiusLoop(activity: AppCompatActivity): MobiusLoop.Builder<M, E, F>
+
+    abstract fun getMobiusController(loop: MobiusLoop.Builder<M, E, F>): MobiusLoop.Controller<M, E>
+
+    abstract fun getViewModel(activity: AppCompatActivity): CustomViewModel<M>
 
     abstract fun uiHandler(modelStream: Observable<M>): Observable<E>
+
+    abstract fun init(model: M)
 
     abstract fun render(model: M)
 

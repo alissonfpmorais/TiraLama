@@ -10,13 +10,13 @@ import br.com.alissonfpmorais.tiralama.common.data.source.TransactionSource
 @Dao
 interface TransactionDao : TransactionSource {
     @Insert
-    override fun insertTransaction(transaction: Transaction)
+    override fun insertTransaction(transaction: Transaction): Long
 
     @Query("select * from `transaction`")
     override fun listTransactions(): List<Transaction>
 
     @Update
-    override fun updateTransaction(transaction: Transaction)
+    override fun updateTransaction(transaction: Transaction): Int
 
     @Query("delete from `transaction`")
     override fun truncate()

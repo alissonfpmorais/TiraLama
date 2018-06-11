@@ -1,64 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".login.AuthActivity">
+    android:orientation="vertical"
+    tools:context=".auth.AuthActivity">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/default_margin"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.5">
-
-        <EditText
-            android:id="@+id/userEt"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/default_margin"
-            android:layout_marginTop="@dimen/default_margin"
-            android:layout_marginBottom="@dimen/minimum_margin"
-            android:hint="@string/user_hint"/>
-
-        <TextView
-            android:id="@+id/userErrorTv"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/default_margin"
-            android:visibility="invisible"
-            tools:text="User Error"
-            tools:visibility="visible"/>
-
-        <EditText
-            android:id="@+id/passEt"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/default_margin"
-            android:layout_marginTop="@dimen/default_margin"
-            android:layout_marginBottom="@dimen/minimum_margin"
-            android:hint="@string/pass_hint"/>
-
-        <TextView
-            android:id="@+id/passErrorTv"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/default_margin"
-            android:visibility="invisible"
-            tools:text="Pass Error"
-            tools:visibility="visible"/>
-
-        <Button
-            android:id="@+id/loginBt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/default_margin"
-            android:layout_gravity="center"
-            android:text="@string/login_button_text"/>
-    </LinearLayout>
-</android.support.constraint.ConstraintLayout>
+</LinearLayout>

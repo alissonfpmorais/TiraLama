@@ -5,4 +5,11 @@
     <string name="pass_hint">Senha</string>
     <string name="login_button_text">Entrar</string>
     <string name="register_button_text">Registrar</string>
+    <string name="logo_image_description">Logo do aplicativo</string>
+    <string name="back_button_text">Voltar</string>
+    <string name="username_error_msg">Usuário inválido</string>
+    <string name="password_error_msg">Senha inválida</string>
+    <string name="confirmation_error_msg">Confirmação inválida</string>
+    <string name="login_failed_msg">Credenciais inválidas</string>
+    <string name="register_failed_msg">Não foi possível criar o usuário</string>
 </resources>

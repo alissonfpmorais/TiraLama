@@ -20,7 +20,7 @@ import android.arch.persistence.room.TypeConverter
 
 import java.util.Date
 
-object DateConverter {
+class DateConverter {
     @TypeConverter
     fun toDate(timestamp: Long?): Date? = if (timestamp == null) null else Date(timestamp)
 

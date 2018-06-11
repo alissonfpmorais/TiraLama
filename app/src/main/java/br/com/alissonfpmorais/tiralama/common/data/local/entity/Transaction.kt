@@ -9,14 +9,14 @@ import java.util.*
     foreignKeys = [
         (ForeignKey(entity = Category::class, parentColumns = ["id"], childColumns = ["category_in_id"])),
         (ForeignKey(entity = Category::class, parentColumns = ["id"], childColumns = ["category_out_id"])),
-        (ForeignKey(entity = User::class, parentColumns = ["id"], childColumns = ["user_id"]))
+        (ForeignKey(entity = User::class, parentColumns = ["username"], childColumns = ["user_id"]))
     ]
 )
 @TypeConverters(DateConverter::class)
 data class Transaction(
-    @PrimaryKey val id: String,
-    val value: Float,
-    val date: Date,
-    @ColumnInfo(name = "category_in_id") val categoryInId: String,
-    @ColumnInfo(name = "category_out_id") val categoryOutId: String,
-    @ColumnInfo(name = "user_id") val userId: String)
+        @PrimaryKey(autoGenerate = true) val id: Int? = null,
+        val value: Float,
+        val date: Date,
+        @ColumnInfo(name = "category_in_id") val categoryInId: Int,
+        @ColumnInfo(name = "category_out_id") val categoryOutId: Int,
+        @ColumnInfo(name = "user_id") val userId: String)
