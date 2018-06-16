@@ -3,18 +3,17 @@ package br.com.alissonfpmorais.tiralama.auth.register
 
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.NavController
 import br.com.alissonfpmorais.tiralama.R
 import br.com.alissonfpmorais.tiralama.auth.register.external.RegisterViewModel
 import br.com.alissonfpmorais.tiralama.auth.register.external.registerHandler
 import br.com.alissonfpmorais.tiralama.auth.register.internal.*
 import br.com.alissonfpmorais.tiralama.common.CustomViewModel
 import br.com.alissonfpmorais.tiralama.common.MobiusFragment
-import br.com.alissonfpmorais.tiralama.common.NavigationHost
 import com.jakewharton.rxbinding2.view.RxView
 import com.jakewharton.rxbinding2.widget.RxTextView
 import com.spotify.mobius.MobiusLoop
@@ -27,19 +26,19 @@ import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_register.*
 import java.util.concurrent.TimeUnit
 
-/**
- * A simple [Fragment] subclass.
- */
+typealias RegisterLoopBuilder = MobiusLoop.Builder<RegisterModel, RegisterEvent, RegisterEffect>
+typealias RegisterLoopController = MobiusLoop.Controller<RegisterModel, RegisterEvent>
+
 class RegisterFragment : MobiusFragment<RegisterModel, RegisterEvent, RegisterEffect>() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_register, container, false)
     }
 
-    override fun getMobiusLoop(activity: AppCompatActivity): MobiusLoop.Builder<RegisterModel, RegisterEvent, RegisterEffect> {
-        return RxMobius.loop(::registerUpdate, registerHandler(activity, activity as NavigationHost))
+    override fun getMobiusLoop(activity: AppCompatActivity, navController: NavController): RegisterLoopBuilder {
+        return RxMobius.loop(::registerUpdate, registerHandler(activity, navController))
     }
 
-    override fun getMobiusController(loop: MobiusLoop.Builder<RegisterModel, RegisterEvent, RegisterEffect>): MobiusLoop.Controller<RegisterModel, RegisterEvent> {
+    override fun getMobiusController(loop: RegisterLoopBuilder): RegisterLoopController {
         return MobiusAndroid.controller(loop, RegisterModel())
     }
 
@@ -54,17 +53,14 @@ class RegisterFragment : MobiusFragment<RegisterModel, RegisterEvent, RegisterEf
                 }
 
         val usernameStream = RxTextView.textChanges(usernameInput)
-                .observeOn(Schedulers.computation())
                 .debounce(300, TimeUnit.MILLISECONDS)
                 .map { text -> UsernameInputChanged(text.toString(), getString(R.string.username_error_msg)) }
 
         val passwordTextStream = RxTextView.textChanges(passwordInput)
-                .observeOn(Schedulers.computation())
                 .debounce(300, TimeUnit.MILLISECONDS)
                 .map { text -> text.toString() }
 
         val confirmationTextStream = RxTextView.textChanges(confirmationInput)
-                .observeOn(Schedulers.computation())
                 .debounce(300, TimeUnit.MILLISECONDS)
                 .map { text -> text.toString() }
 
@@ -76,33 +72,34 @@ class RegisterFragment : MobiusFragment<RegisterModel, RegisterEvent, RegisterEf
                 .observeOn(Schedulers.computation())
 
         val registerClickStream = RxView.clicks(registerBt)
-                .observeOn(Schedulers.computation())
                 .map { RegisterButtonClicked }
 
-        val backClickStream = RxView.clicks(backBt)
-                .observeOn(Schedulers.computation())
-                .map { BackButtonClicked }
+//        val backClickStream = RxView.clicks(backBt)
+//                .observeOn(Schedulers.computation())
+//                .map { BackButtonClicked }
 
-        val streams = listOf(usernameStream, passwordStream, registerClickStream, backClickStream)
+        val streams = listOf(usernameStream, passwordStream, registerClickStream)
 
         return Observable.merge(streams)
                 .observeOn(Schedulers.computation())
                 .doOnDispose { modelDisposable.dispose() }
     }
 
-    override fun init(model: RegisterModel) {
-        usernameInput?.setText(model.username)
-        passwordInput?.setText(model.password)
-        confirmationInput?.setText(model.confirmation)
+//    override fun init(model: RegisterModel) {
+//        usernameInput?.setText(model.username)
+//        passwordInput?.setText(model.password)
+//        confirmationInput?.setText(model.confirmation)
+//
+//        render(model)
+//    }
 
-        render(model)
-    }
+    override fun init(model: RegisterModel) { }
 
     override fun render(model: RegisterModel) {
         usernameInput?.isEnabled = !model.isRegistering
         passwordInput?.isEnabled = !model.isRegistering
         confirmationInput?.isEnabled = !model.isRegistering
-        backBt?.isEnabled = !model.isRegistering
+//        backBt?.isEnabled = !model.isRegistering
         registerBt?.isEnabled = model.canRegister && !model.isRegistering
 
         if (!model.isUsernameValid && usernameInput?.text.toString() != "") usernameLayout?.error = model.userErrMsg

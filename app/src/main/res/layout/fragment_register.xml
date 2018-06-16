@@ -13,7 +13,7 @@
         android:layout_gravity="center_vertical"
         android:orientation="vertical">
 
-        <ImageView
+        <android.support.v7.widget.AppCompatImageView
             android:id="@+id/logoImg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -32,6 +32,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/user_hint"
+                android:inputType="text"
                 android:imeOptions="actionNext"/>
         </android.support.design.widget.TextInputLayout>
 
@@ -79,14 +80,14 @@
                 android:text="@string/register_button_text"
                 android:enabled="false"/>
 
-            <android.support.design.button.MaterialButton
-                android:id="@+id/backBt"
-                style="@style/Widget.MaterialComponents.Button.TextButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/default_margin"
-                android:layout_toStartOf="@id/registerBt"
-                android:text="@string/back_button_text"/>
+            <!--<android.support.design.button.MaterialButton-->
+                <!--android:id="@+id/backBt"-->
+                <!--style="@style/Widget.MaterialComponents.Button.TextButton"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginEnd="@dimen/default_margin"-->
+                <!--android:layout_toStartOf="@id/registerBt"-->
+                <!--android:text="@string/back_button_text"/>-->
         </RelativeLayout>
     </LinearLayout>
 </ScrollView>

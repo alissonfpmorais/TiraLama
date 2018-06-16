@@ -13,7 +13,7 @@ fun registerUpdate(model: RegisterModel, event: RegisterEvent): NextRegister {
         is UsernameInputChanged -> onUsernameInputChanged(model, event.username, event.errorMsg)
         is PasswordInputChanged -> onPasswordInputChanged(model, event.password, event.confirmation, event.passErrMsg, event.confirmErrMsg)
         is RegisterButtonClicked -> onRegisterButtonClicked(model)
-        is BackButtonClicked -> onBackButtonClicked()
+//        is BackButtonClicked -> onBackButtonClicked()
         is RegisterSuccessful -> onRegisterSuccessful()
         is RegisterFailed -> onRegisterFailed(model, event.errorMsg)
         is NavigatedToLoginScreen -> onNavigatedToLoginScreen()
@@ -69,9 +69,9 @@ fun onRegisterButtonClicked(model: RegisterModel): NextRegister {
     }
 }
 
-fun onBackButtonClicked(): NextRegister = Next.next(RegisterModel(), Effects.effects(NavigateToLoginScreen))
+//fun onBackButtonClicked(): NextRegister = Next.next(RegisterModel(), Effects.effects(NavigateToLoginScreen))
 
-fun onRegisterSuccessful(): NextRegister = Next.dispatch(Effects.effects(NavigateToLoginScreen))
+fun onRegisterSuccessful(): NextRegister = Next.next(RegisterModel(), Effects.effects(NavigateToLoginScreen))
 
 fun onRegisterFailed(model: RegisterModel, errorMsg: String): NextRegister {
     return Next.next(model.copy(canRegister = true, isRegistering = false),

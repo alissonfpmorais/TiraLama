@@ -8,7 +8,7 @@ data class PasswordInputChanged(val password: String,
                                 val passErrMsg: String,
                                 val confirmErrMsg: String) : RegisterEvent()
 object RegisterButtonClicked : RegisterEvent()
-object BackButtonClicked : RegisterEvent()
+//object BackButtonClicked : RegisterEvent()
 object RegisterSuccessful : RegisterEvent()
 data class RegisterFailed(val errorMsg: String) : RegisterEvent()
 object NavigatedToLoginScreen : RegisterEvent()

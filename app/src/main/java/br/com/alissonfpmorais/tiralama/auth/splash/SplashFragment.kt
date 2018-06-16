@@ -6,16 +6,13 @@ import android.support.v7.app.AppCompatActivity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.NavController
 import br.com.alissonfpmorais.tiralama.R
-import br.com.alissonfpmorais.tiralama.auth.AuthScreen
-import br.com.alissonfpmorais.tiralama.auth.SplashScreen
-import br.com.alissonfpmorais.tiralama.common.CustomViewModel
-import br.com.alissonfpmorais.tiralama.common.MobiusActivity
 import br.com.alissonfpmorais.tiralama.auth.splash.external.SplashViewModel
 import br.com.alissonfpmorais.tiralama.auth.splash.external.splashHandler
 import br.com.alissonfpmorais.tiralama.auth.splash.internal.*
+import br.com.alissonfpmorais.tiralama.common.CustomViewModel
 import br.com.alissonfpmorais.tiralama.common.MobiusFragment
-import br.com.alissonfpmorais.tiralama.common.NavigationHost
 import com.spotify.mobius.MobiusLoop
 import com.spotify.mobius.android.MobiusAndroid
 import com.spotify.mobius.rx2.RxMobius
@@ -24,16 +21,19 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import java.util.concurrent.TimeUnit
 
+typealias SplashLoopBuilder = MobiusLoop.Builder<SplashModel, SplashEvent, SplashEffect>
+typealias SplashLoopController = MobiusLoop.Controller<SplashModel, SplashEvent>
+
 class SplashFragment : MobiusFragment<SplashModel, SplashEvent, SplashEffect>() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_splash, container, false)
     }
 
-    override fun getMobiusLoop(activity: AppCompatActivity): MobiusLoop.Builder<SplashModel, SplashEvent, SplashEffect> {
-        return RxMobius.loop(::splashUpdate, splashHandler(activity, activity as NavigationHost))
+    override fun getMobiusLoop(activity: AppCompatActivity, navController: NavController): SplashLoopBuilder {
+        return RxMobius.loop(::splashUpdate, splashHandler(activity, navController))
     }
 
-    override fun getMobiusController(loop: MobiusLoop.Builder<SplashModel, SplashEvent, SplashEffect>): MobiusLoop.Controller<SplashModel, SplashEvent> {
+    override fun getMobiusController(loop: SplashLoopBuilder): SplashLoopController {
         return MobiusAndroid.controller(loop, SplashModel())
     }
 

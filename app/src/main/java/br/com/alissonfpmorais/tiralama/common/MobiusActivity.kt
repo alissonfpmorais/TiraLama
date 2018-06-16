@@ -1,14 +1,11 @@
 package br.com.alissonfpmorais.tiralama.common
 
 import android.arch.lifecycle.Observer
-import android.content.Intent
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import com.spotify.mobius.MobiusLoop
 import com.spotify.mobius.rx2.RxConnectables
 import io.reactivex.Observable
-import io.reactivex.disposables.CompositeDisposable
 
 abstract class MobiusActivity<M, E, F> : AppCompatActivity() {
     lateinit var viewModel: CustomViewModel<M>

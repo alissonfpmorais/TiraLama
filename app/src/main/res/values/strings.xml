@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">TiraLama</string>
 
+    <!-- Screens on AuthActivity -->
     <string name="logo_image_description">App\'s logo</string>
     <string name="user_hint">User</string>
     <string name="pass_hint">Password</string>
@@ -8,10 +9,35 @@
     <string name="register_button_text">Register</string>
     <string name="back_button_text">Back</string>
 
+    <!-- Screens on MainActivity -->
+    <string name="color_image_description">Category\'s color</string>
+    <string name="category_type_text">Category\'s type</string>
+    <string name="category_color_text">Category\'s color</string>
+    <string name="category_name_hint">Category\'s name</string>
+    <string name="save_button_text">Save</string>
+    <string name="transaction_name_hint">Transaction\'s name</string>
+    <string name="transaction_value_hint">Transaction\'s value</string>
+
+    <!-- Labels -->
+    <string name="categories_label">Categories</string>
+    <string name="transactions_label">Transactions</string>
+    <string name="statistics_label">Statistics</string>
+    <string name="help_label">Help</string>
+    <string name="add_category_label">Add category</string>
+    <string name="add_transaction_label">Add transaction</string>
+    <string name="logout_label">Logout</string>
+
     <!-- Error messages -->
     <string name="username_error_msg">Invalid username</string>
     <string name="password_error_msg">Invalid password</string>
     <string name="confirmation_error_msg">Invalid confirmation password</string>
     <string name="login_failed_msg">Invalid credentials</string>
     <string name="register_failed_msg">Impossible to create user</string>
+    <string name="category_name_failed_msg">Invalid category name</string>
+    <string name="transaction_name_failed_msg">Invalid transaction name</string>
+    <string name="transaction_value_failed_msg">Invalid transaction value</string>
+    <string name="save_failed_msg">Impossible to create</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
 </resources>

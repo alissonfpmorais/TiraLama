@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".auth.splash.SplashFragment">
 
-    <ImageView
+    <android.support.v7.widget.AppCompatImageView
         android:id="@+id/logoImg"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

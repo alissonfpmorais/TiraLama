@@ -3,20 +3,17 @@ package br.com.alissonfpmorais.tiralama.auth.login
 
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.NavController
 import br.com.alissonfpmorais.tiralama.R
-import br.com.alissonfpmorais.tiralama.auth.AuthScreen
-import br.com.alissonfpmorais.tiralama.auth.LoginScreen
 import br.com.alissonfpmorais.tiralama.auth.login.external.LoginViewModel
 import br.com.alissonfpmorais.tiralama.auth.login.external.loginHandler
 import br.com.alissonfpmorais.tiralama.auth.login.internal.*
 import br.com.alissonfpmorais.tiralama.common.CustomViewModel
 import br.com.alissonfpmorais.tiralama.common.MobiusFragment
-import br.com.alissonfpmorais.tiralama.common.NavigationHost
 import com.jakewharton.rxbinding2.view.RxView
 import com.jakewharton.rxbinding2.widget.RxTextView
 import com.spotify.mobius.MobiusLoop
@@ -28,19 +25,19 @@ import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_login.*
 import java.util.concurrent.TimeUnit
 
-/**
- * A simple [Fragment] subclass.
- */
+typealias LoginLoopBuilder = MobiusLoop.Builder<LoginModel, LoginEvent, LoginEffect>
+typealias LoginLoopController = MobiusLoop.Controller<LoginModel, LoginEvent>
+
 class LoginFragment : MobiusFragment<LoginModel, LoginEvent, LoginEffect>() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_login, container, false)
     }
 
-    override fun getMobiusLoop(activity: AppCompatActivity): MobiusLoop.Builder<LoginModel, LoginEvent, LoginEffect> {
-        return RxMobius.loop(::loginUpdate, loginHandler(activity, activity as NavigationHost))
+    override fun getMobiusLoop(activity: AppCompatActivity, navController: NavController): LoginLoopBuilder {
+        return RxMobius.loop(::loginUpdate, loginHandler(activity, navController))
     }
 
-    override fun getMobiusController(loop: MobiusLoop.Builder<LoginModel, LoginEvent, LoginEffect>): MobiusLoop.Controller<LoginModel, LoginEvent> {
+    override fun getMobiusController(loop: LoginLoopBuilder): LoginLoopController {
         return MobiusAndroid.controller(loop, LoginModel())
     }
 
@@ -56,21 +53,17 @@ class LoginFragment : MobiusFragment<LoginModel, LoginEvent, LoginEffect>() {
                 }
 
         val usernameStream = RxTextView.textChanges(usernameInput)
-                .observeOn(Schedulers.computation())
                 .debounce(300, TimeUnit.MILLISECONDS)
                 .map { text -> UsernameInputChanged(text.toString(), getString(R.string.username_error_msg)) }
 
         val passwordStream = RxTextView.textChanges(passwordInput)
-                .observeOn(Schedulers.computation())
                 .debounce(300, TimeUnit.MILLISECONDS)
                 .map { text -> PasswordInputChanged(text.toString(), getString(R.string.password_error_msg)) }
 
         val loginClickStream = RxView.clicks(loginBt)
-                .observeOn(Schedulers.computation())
                 .map { LoginButtonClicked }
 
         val registerClickStream = RxView.clicks(registerBt)
-                .observeOn(Schedulers.computation())
                 .map { RegisterButtonClicked }
 
         val streams = listOf(usernameStream, passwordStream, loginClickStream, registerClickStream)

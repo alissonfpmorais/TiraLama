@@ -1,12 +1,9 @@
 package br.com.alissonfpmorais.tiralama.auth.register.external
 
 import android.support.v7.app.AppCompatActivity
+import androidx.navigation.NavController
 import br.com.alissonfpmorais.tiralama.R
-import br.com.alissonfpmorais.tiralama.auth.AuthActivity
-import br.com.alissonfpmorais.tiralama.auth.LoginScreen
-import br.com.alissonfpmorais.tiralama.auth.login.LoginFragment
 import br.com.alissonfpmorais.tiralama.auth.register.internal.*
-import br.com.alissonfpmorais.tiralama.common.NavigationHost
 import br.com.alissonfpmorais.tiralama.common.data.local.AppDatabase
 import br.com.alissonfpmorais.tiralama.common.data.local.DatabaseHolder
 import br.com.alissonfpmorais.tiralama.common.data.local.entity.User
@@ -18,14 +15,14 @@ import io.reactivex.schedulers.Schedulers
 
 typealias RegisterHandler = (Observable<RegisterEffect>) -> Observable<RegisterEvent>
 
-fun registerHandler(activity: AppCompatActivity, navHost: NavigationHost): RegisterHandler {
+fun registerHandler(activity: AppCompatActivity, navController: NavController): RegisterHandler {
     return fun(effectStream: Observable<RegisterEffect>): Observable<RegisterEvent> {
         return effectStream
                 .observeOn(Schedulers.computation())
                 .flatMap { effect ->
                     when(effect) {
                         is AttemptToRegister -> onAttemptToRegister(activity, effect.username, effect.password)
-                        is NavigateToLoginScreen -> onNavigateToLoginScreen(navHost)
+                        is NavigateToLoginScreen -> onNavigateToLoginScreen(navController)
                         is ShowRegisterFailed -> onShowRegisterFailed(activity, effect.errorMsg)
                     }
                 }
@@ -45,12 +42,10 @@ fun onAttemptToRegister(activity: AppCompatActivity, username: String, password:
             .toObservable()
 }
 
-fun onNavigateToLoginScreen(navHost: NavigationHost): Observable<RegisterEvent> {
+fun onNavigateToLoginScreen(navController: NavController): Observable<RegisterEvent> {
     return Observable.just(NavigatedToLoginScreen as RegisterEvent)
             .observeOn(AndroidSchedulers.mainThread())
-            .doOnNext {
-                navHost.replaceFragment(LoginFragment(), false)
-            }
+            .doOnNext { navController.navigateUp() }
 }
 
 fun onShowRegisterFailed(activity: AppCompatActivity, errorMsg: String): Observable<RegisterEvent> {

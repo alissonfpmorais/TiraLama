@@ -15,4 +15,13 @@ fun validateConfirmation(password: String, confirmation: String): Boolean {
     return validatePassword(confirmation) && password == confirmation
 }
 
+fun validateCategoryName(categoryName: String): Boolean = textGreaterThan(categoryName, 2)
+
+fun validateTransactionName(transactionName: String): Boolean = textGreaterThan(transactionName, 2)
+
+fun validateTransactionValue(transactionValue: String): Boolean {
+    val regex: Regex = "-?([0-9])*\\.?([0-9])*".toRegex()
+    return transactionValue.matches(regex)
+}
+
 fun textGreaterThan(text: String, max: Int): Boolean = text.length > max

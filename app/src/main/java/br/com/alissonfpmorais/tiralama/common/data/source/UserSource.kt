@@ -6,6 +6,6 @@ interface UserSource {
     fun insertUser(user: User): Long
     fun listByLogged(isLogged: Boolean): List<User>
     fun listByUsernameAndPassword(username: String, password: String): List<User>
-    fun updatePassword(user: User): Int
+    fun update(user: User): Int
     fun truncate()
 }

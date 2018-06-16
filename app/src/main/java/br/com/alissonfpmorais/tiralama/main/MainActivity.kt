@@ -2,24 +2,28 @@ package br.com.alissonfpmorais.tiralama.main
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.support.v4.app.Fragment
+import android.util.Log
+import androidx.navigation.findNavController
+import androidx.navigation.ui.NavigationUI
 import br.com.alissonfpmorais.tiralama.R
-import br.com.alissonfpmorais.tiralama.common.NavigationHost
+import com.jakewharton.rxbinding2.view.RxMenuItem
+import com.jakewharton.rxbinding2.widget.RxAdapterView
+import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity : AppCompatActivity(), NavigationHost {
-
+class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        NavigationUI.setupActionBarWithNavController(this, findNavController(R.id.mainNavHost), drawerLayout)
+        NavigationUI.setupWithNavController(navigation, findNavController(R.id.mainNavHost))
+
+        RxMenuItem.clicks(navigation.menu.findItem(R.id.logout))
+                .subscribe { Log.d("lgoout", "clicado!") }
     }
 
-    override fun replaceFragment(fragment: Fragment, addToBackstack: Boolean) {
-        val transaction = supportFragmentManager
-                .beginTransaction()
-                .replace(R.id.container, fragment)
-
-        if (addToBackstack) transaction.addToBackStack(null)
-
-        transaction.commit()
+    override fun onSupportNavigateUp(): Boolean {
+        NavigationUI.navigateUp(drawerLayout, findNavController(R.id.mainNavHost))
+        return super.onSupportNavigateUp()
     }
 }

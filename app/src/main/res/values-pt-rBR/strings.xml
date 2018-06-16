@@ -12,4 +12,22 @@
     <string name="confirmation_error_msg">Confirmação inválida</string>
     <string name="login_failed_msg">Credenciais inválidas</string>
     <string name="register_failed_msg">Não foi possível criar o usuário</string>
+    <string name="categories_label">Categorias</string>
+    <string name="add_category_label">Adicionar categoria</string>
+    <string name="add_transaction_label">Adicionar transaçao</string>
+    <string name="transactions_label">Transações</string>
+    <string name="statistics_label">Estatísticas</string>
+    <string name="help_label">Ajuda</string>
+    <string name="logout_label">Encerrar</string>
+    <string name="color_image_description">Cor da categoria</string>
+    <string name="transaction_name_hint">Nome da transação</string>
+    <string name="transaction_value_hint">Valor da transação</string>
+    <string name="category_name_hint">Nome da categoria</string>
+    <string name="save_button_text">Salvar</string>
+    <string name="category_type_text">Tipo da categoria</string>
+    <string name="category_color_text">Cor da categoria</string>
+    <string name="save_failed_msg">Não foi possível criar</string>
+    <string name="category_name_failed_msg">Nome de categoria inválido</string>
+    <string name="transaction_name_failed_msg">Nome da transação inválido</string>
+    <string name="transaction_value_failed_msg">Valor da transação inválido</string>
 </resources>

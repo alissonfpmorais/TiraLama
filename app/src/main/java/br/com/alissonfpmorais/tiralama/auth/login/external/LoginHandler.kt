@@ -1,10 +1,11 @@
 package br.com.alissonfpmorais.tiralama.auth.login.external
 
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
+import androidx.navigation.NavController
+import androidx.navigation.NavDirections
 import br.com.alissonfpmorais.tiralama.R
 import br.com.alissonfpmorais.tiralama.auth.login.internal.*
-import br.com.alissonfpmorais.tiralama.auth.register.RegisterFragment
-import br.com.alissonfpmorais.tiralama.common.NavigationHost
 import br.com.alissonfpmorais.tiralama.common.changeActivity
 import br.com.alissonfpmorais.tiralama.common.data.local.AppDatabase
 import br.com.alissonfpmorais.tiralama.common.data.local.DatabaseHolder
@@ -18,7 +19,7 @@ import io.reactivex.schedulers.Schedulers
 
 typealias LoginHandler = (Observable<LoginEffect>) -> (Observable<LoginEvent>)
 
-fun loginHandler(activity: AppCompatActivity, navHost: NavigationHost): LoginHandler {
+fun loginHandler(activity: AppCompatActivity, navController: NavController): LoginHandler {
     return fun (effectStream: Observable<LoginEffect>): Observable<LoginEvent> {
         return effectStream
                 .observeOn(Schedulers.computation())
@@ -27,7 +28,7 @@ fun loginHandler(activity: AppCompatActivity, navHost: NavigationHost): LoginHan
                         is AttemptToLogin -> onAttemptToLogin(activity, effect.username, effect.password)
                         is ShowLoginFailed -> onShowLoginFailed(activity, effect.errorMsg)
                         is NavigateToMainScreen -> onNavigateToMainScreen(activity)
-                        is NavigateToRegisterScreen -> onNavigateToRegisterScreen(navHost)
+                        is NavigateToRegisterScreen -> onNavigateToRegisterScreen(navController)
                     }
                 }
     }
@@ -38,9 +39,13 @@ fun onAttemptToLogin(activity: AppCompatActivity, username: String, password: St
 
     return singleDb
             .map { database ->
-                // TODO update user (isUserLogged)
                 val users: List<User> = database.userDao().listByUsernameAndPassword(username, password)
-                if (users.isNotEmpty()) LoginSuccessful
+                if (users.isNotEmpty()) {
+                    val user = users.first().copy(isLogged = true)
+                    database.userDao().update(user)
+
+                    LoginSuccessful
+                }
                 else LoginFailed(activity.getString(R.string.login_failed_msg))
             }
             .toObservable()
@@ -61,8 +66,8 @@ fun onNavigateToMainScreen(activity: AppCompatActivity): Observable<LoginEvent> 
             }
 }
 
-fun onNavigateToRegisterScreen(navHost: NavigationHost): Observable<LoginEvent> {
+fun onNavigateToRegisterScreen(navController: NavController): Observable<LoginEvent> {
     return Observable.just(NavigatedToRegisterScreen as LoginEvent)
             .observeOn(AndroidSchedulers.mainThread())
-            .doOnNext { navHost.replaceFragment(RegisterFragment(), true) }
+            .doOnNext { navController.navigate(R.id.registerFragment) }
 }

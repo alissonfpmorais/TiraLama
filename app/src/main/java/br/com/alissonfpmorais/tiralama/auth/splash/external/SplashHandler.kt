@@ -1,10 +1,9 @@
 package br.com.alissonfpmorais.tiralama.auth.splash.external
 
-import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
-import br.com.alissonfpmorais.tiralama.auth.login.LoginFragment
+import androidx.navigation.NavController
+import br.com.alissonfpmorais.tiralama.R
 import br.com.alissonfpmorais.tiralama.auth.splash.internal.*
-import br.com.alissonfpmorais.tiralama.common.NavigationHost
 import br.com.alissonfpmorais.tiralama.common.changeActivity
 import br.com.alissonfpmorais.tiralama.common.data.local.AppDatabase
 import br.com.alissonfpmorais.tiralama.common.data.local.DatabaseHolder
@@ -16,14 +15,14 @@ import io.reactivex.schedulers.Schedulers
 
 typealias SplashHandler = (Observable<SplashEffect>) -> Observable<SplashEvent>
 
-fun splashHandler(activity: AppCompatActivity, navHost: NavigationHost): SplashHandler {
+fun splashHandler(activity: AppCompatActivity, navController: NavController): SplashHandler {
     return fun (effectStream: Observable<SplashEffect>): Observable<SplashEvent> {
         return effectStream
                 .observeOn(Schedulers.computation())
                 .flatMap { effect ->
                     when (effect) {
                         is LookForLoggedUser -> onLookForLoggedUser(activity)
-                        is NavigateToLoginScreen -> onNavigateToLoginScreen(navHost)
+                        is NavigateToLoginScreen -> onNavigateToLoginScreen(navController)
                         is NavigateToMainActivity -> onNavigateToMainActivity(activity)
                     }
                 }
@@ -41,10 +40,10 @@ fun onLookForLoggedUser(activity: AppCompatActivity): Observable<SplashEvent> {
             .toObservable()
 }
 
-fun onNavigateToLoginScreen(navHost: NavigationHost): Observable<SplashEvent> {
+fun onNavigateToLoginScreen(navController: NavController): Observable<SplashEvent> {
     return Observable.just(NavigatedToLoginScreen as SplashEvent)
             .observeOn(AndroidSchedulers.mainThread())
-            .doOnNext { navHost.replaceFragment(LoginFragment(), false) }
+            .doOnNext { navController.navigate(R.id.action_splashFragment_to_loginFragment) }
 }
 
 fun onNavigateToMainActivity(activity: AppCompatActivity): Observable<SplashEvent> {

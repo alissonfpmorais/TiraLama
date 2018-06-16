@@ -16,7 +16,7 @@ interface UserDao : UserSource {
     override fun listByUsernameAndPassword(username: String, password: String): List<User>
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
-    override fun updatePassword(user: User): Int
+    override fun update(user: User): Int
 
     @Query("delete from user")
     override fun truncate()

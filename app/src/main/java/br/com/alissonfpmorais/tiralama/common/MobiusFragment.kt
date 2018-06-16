@@ -5,9 +5,13 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.view.View
+import androidx.navigation.NavController
+import androidx.navigation.findNavController
+import br.com.alissonfpmorais.tiralama.R
 import com.spotify.mobius.MobiusLoop
 import com.spotify.mobius.rx2.RxConnectables
 import io.reactivex.Observable
+import kotlinx.android.synthetic.main.activity_auth.*
 
 abstract class MobiusFragment<M, E, F> : Fragment() {
     lateinit var viewModel: CustomViewModel<M>
@@ -22,7 +26,9 @@ abstract class MobiusFragment<M, E, F> : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val loop: MobiusLoop.Builder<M, E, F> = getMobiusLoop(activity as AppCompatActivity)
+        val loop: MobiusLoop.Builder<M, E, F> =
+                getMobiusLoop(activity as AppCompatActivity, view.findNavController())
+
         controller = getMobiusController(loop)
 
         controller.connect(RxConnectables.fromTransformer(this::uiHandler))
@@ -53,7 +59,7 @@ abstract class MobiusFragment<M, E, F> : Fragment() {
         controller.disconnect()
     }
 
-    abstract fun getMobiusLoop(activity: AppCompatActivity): MobiusLoop.Builder<M, E, F>
+    abstract fun getMobiusLoop(activity: AppCompatActivity, navController: NavController): MobiusLoop.Builder<M, E, F>
 
     abstract fun getMobiusController(loop: MobiusLoop.Builder<M, E, F>): MobiusLoop.Controller<M, E>
 
