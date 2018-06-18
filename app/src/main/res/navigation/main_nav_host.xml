@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/categoriesFragment"
-        android:name="br.com.alissonfpmorais.tiralama.main.components.listcategories.CategoriesFragment"
+        android:name="br.com.alissonfpmorais.tiralama.main.listcategories.CategoriesFragment"
         android:label="@string/categories_label"
         tools:layout="@layout/fragment_categories" >
         <action
@@ -16,7 +16,7 @@
     </fragment>
     <fragment
         android:id="@+id/transactionsFragment"
-        android:name="br.com.alissonfpmorais.tiralama.main.components.listtransaction.TransactionsFragment"
+        android:name="br.com.alissonfpmorais.tiralama.main.listtransaction.TransactionsFragment"
         android:label="@string/transactions_label"
         tools:layout="@layout/fragment_transactions" >
         <action
@@ -25,22 +25,22 @@
     </fragment>
     <fragment
         android:id="@+id/statisticsFragment"
-        android:name="br.com.alissonfpmorais.tiralama.main.components.statistics.StatisticsFragment"
+        android:name="br.com.alissonfpmorais.tiralama.main.statistics.StatisticsFragment"
         android:label="@string/statistics_label"
         tools:layout="@layout/fragment_statistics" />
     <fragment
         android:id="@+id/helpFragment"
-        android:name="br.com.alissonfpmorais.tiralama.main.components.help.HelpFragment"
+        android:name="br.com.alissonfpmorais.tiralama.main.help.HelpFragment"
         android:label="@string/help_label"
         tools:layout="@layout/fragment_help" />
     <fragment
         android:id="@+id/addCategoryFragment"
-        android:name="br.com.alissonfpmorais.tiralama.main.components.addcategory.AddCategoryFragment"
+        android:name="br.com.alissonfpmorais.tiralama.main.addcategory.AddCategoryFragment"
         android:label="@string/add_category_label"
         tools:layout="@layout/fragment_add_category" />
     <fragment
         android:id="@+id/addTransactionFragment"
-        android:name="br.com.alissonfpmorais.tiralama.main.components.addtransaction.AddTransactionFragment"
+        android:name="br.com.alissonfpmorais.tiralama.main.addtransaction.AddTransactionFragment"
         android:label="@string/add_transaction_label"
         tools:layout="@layout/fragment_add_transaction" />
 </navigation>
