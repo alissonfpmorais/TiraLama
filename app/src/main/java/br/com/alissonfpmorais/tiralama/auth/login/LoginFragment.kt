@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import androidx.navigation.NavController
 import br.com.alissonfpmorais.tiralama.R
 import br.com.alissonfpmorais.tiralama.auth.login.external.LoginViewModel
@@ -60,13 +61,17 @@ class LoginFragment : MobiusFragment<LoginModel, LoginEvent, LoginEffect>() {
                 .debounce(300, TimeUnit.MILLISECONDS)
                 .map { text -> PasswordInputChanged(text.toString(), getString(R.string.password_error_msg)) }
 
+        val keyActionStream = RxTextView.editorActions(passwordInput)
+                .filter { id -> id == EditorInfo.IME_ACTION_DONE || id == EditorInfo.IME_NULL }
+                .map { LoginButtonClicked }
+
         val loginClickStream = RxView.clicks(loginBt)
                 .map { LoginButtonClicked }
 
         val registerClickStream = RxView.clicks(registerBt)
                 .map { RegisterButtonClicked }
 
-        val streams = listOf(usernameStream, passwordStream, loginClickStream, registerClickStream)
+        val streams = listOf(usernameStream, passwordStream, keyActionStream, loginClickStream, registerClickStream)
 
         return Observable.merge(streams)
                 .observeOn(Schedulers.computation())

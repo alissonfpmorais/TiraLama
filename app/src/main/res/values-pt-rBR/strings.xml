@@ -18,7 +18,7 @@
     <string name="transactions_label">Transações</string>
     <string name="statistics_label">Estatísticas</string>
     <string name="help_label">Ajuda</string>
-    <string name="logout_label">Encerrar</string>
+    <string name="logout_label">Encerrar sessão</string>
     <string name="color_image_description">Cor da categoria</string>
     <string name="transaction_name_hint">Nome da transação</string>
     <string name="transaction_value_hint">Valor da transação</string>
@@ -30,4 +30,8 @@
     <string name="category_name_failed_msg">Nome de categoria inválido</string>
     <string name="transaction_name_failed_msg">Nome da transação inválido</string>
     <string name="transaction_value_failed_msg">Valor da transação inválido</string>
+    <string name="confirm_delete_msg">Tem certeza que deseja deletar?</string>
+    <string name="no_msg">Não</string>
+    <string name="yes_msg">Sim</string>
+    <string name="register_success_msg">Registrado com sucesso!</string>
 </resources>

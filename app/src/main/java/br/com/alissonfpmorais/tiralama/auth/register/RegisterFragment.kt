@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import androidx.navigation.NavController
 import br.com.alissonfpmorais.tiralama.R
 import br.com.alissonfpmorais.tiralama.auth.register.external.RegisterViewModel
@@ -71,6 +72,10 @@ class RegisterFragment : MobiusFragment<RegisterModel, RegisterEvent, RegisterEf
                 })
                 .observeOn(Schedulers.computation())
 
+        val keyActionStream = RxTextView.editorActions(confirmationInput)
+                .filter { id -> id == EditorInfo.IME_ACTION_DONE || id == EditorInfo.IME_NULL }
+                .map { RegisterButtonClicked }
+
         val registerClickStream = RxView.clicks(registerBt)
                 .map { RegisterButtonClicked }
 
@@ -78,7 +83,7 @@ class RegisterFragment : MobiusFragment<RegisterModel, RegisterEvent, RegisterEf
 //                .observeOn(Schedulers.computation())
 //                .map { BackButtonClicked }
 
-        val streams = listOf(usernameStream, passwordStream, registerClickStream)
+        val streams = listOf(usernameStream, passwordStream, keyActionStream, registerClickStream)
 
         return Observable.merge(streams)
                 .observeOn(Schedulers.computation())

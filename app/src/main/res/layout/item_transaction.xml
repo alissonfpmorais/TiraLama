@@ -30,7 +30,7 @@
         <android.support.constraint.ConstraintLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="19"
+            android:layout_weight="49"
             android:paddingStart="@dimen/minimum_margin"
             android:paddingEnd="@dimen/minimum_margin">
 
@@ -41,7 +41,8 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
-                android:textSize="18sp"
+                android:textSize="20sp"
+                android:textColor="@color/white"
                 app:layout_constraintEnd_toStartOf="@+id/deleteBt"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
@@ -76,13 +77,16 @@
                 android:id="@+id/deleteBt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_margin="@dimen/minimum_margin"
                 android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
                 android:background="@android:color/transparent"
-                android:src="@drawable/baseline_delete_black_24"
-                android:tint="@color/colorPrimary"
+                android:paddingStart="@dimen/default_margin"
+                android:paddingBottom="@dimen/default_margin"
+                android:src="@drawable/baseline_delete_24"
+                android:tint="@color/colorAccent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="RtlSymmetry" />
 
             <!--<android.support.design.button.MaterialButton-->
                 <!--android:id="@+id/deleteBt"-->

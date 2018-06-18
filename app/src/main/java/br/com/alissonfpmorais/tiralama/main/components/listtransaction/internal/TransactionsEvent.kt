@@ -7,4 +7,4 @@ sealed class TransactionsEvent
 object RequestUpdatableTransactionsList : TransactionsEvent()
 object FloatingButtonClicked : TransactionsEvent()
 object NavigatedToAddTransactionScreen : TransactionsEvent()
-data class NewTransactionsArrive(val transactions: List<Transaction>) : TransactionsEvent()
+data class TransactionsListUpdated(val transactions: List<Transaction>) : TransactionsEvent()

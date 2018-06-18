@@ -1,6 +1,7 @@
 package br.com.alissonfpmorais.tiralama.main.components.listtransaction.external
 
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import androidx.navigation.NavController
 import br.com.alissonfpmorais.tiralama.R
 import br.com.alissonfpmorais.tiralama.common.data.local.DatabaseHolder
@@ -19,14 +20,14 @@ fun transactionsHandler(activity: AppCompatActivity, navController: NavControlle
                 .observeOn(Schedulers.computation())
                 .flatMap { effect ->
                     when (effect) {
-                        is FillTransactionsList -> onFillTransactionsList(activity, adapter)
+                        is UpdateTransactionsList -> onUpdateTransactionsList(activity, adapter)
                         is NavigateToAddTransactionScreen -> onNavigateToAddCategoryScreen(navController)
                     }
                 }
     }
 }
 
-fun onFillTransactionsList(activity: AppCompatActivity, adapter: TransactionsAdapter): Observable<TransactionsEvent> {
+fun getTransactions(activity: AppCompatActivity): Observable<List<Transaction>> {
     val singleDb = DatabaseHolder.getSingleInstance(activity)
 
     return singleDb
@@ -36,9 +37,16 @@ fun onFillTransactionsList(activity: AppCompatActivity, adapter: TransactionsAda
                 database.transactionDao().listTransactionsByUser(user.username).toObservable()
             }
             .onErrorReturn { listOf() }
+}
+
+fun onUpdateTransactionsList(activity: AppCompatActivity, adapter: TransactionsAdapter): Observable<TransactionsEvent> {
+    return getTransactions(activity)
             .observeOn(AndroidSchedulers.mainThread())
-            .doOnNext { transactions -> if (transactions.isNotEmpty()) adapter.data = transactions }
-            .map { transactions -> NewTransactionsArrive(transactions) as TransactionsEvent }
+            .doOnNext { Log.d("truta", "onUpdateTRansactionsList") }
+            .doOnNext { transactions -> adapter.data = transactions }
+            .doOnNext { Log.d("truta", "adapter atualizado") }
+            .map { transactions -> TransactionsListUpdated(transactions) as TransactionsEvent }
+            .doOnNext { Log.d("truta", "event: $it") }
 }
 
 fun onNavigateToAddCategoryScreen(navController: NavController): Observable<TransactionsEvent> {

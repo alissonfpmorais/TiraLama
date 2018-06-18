@@ -7,6 +7,8 @@ import android.support.v7.app.AppCompatActivity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
+import android.view.inputmethod.EditorInfo
 import androidx.navigation.NavController
 import br.com.alissonfpmorais.tiralama.R
 import br.com.alissonfpmorais.tiralama.common.CustomViewModel
@@ -31,6 +33,11 @@ typealias AddTransactionLoopController = MobiusLoop.Controller<AddTransactionMod
 class AddTransactionFragment : MobiusFragment<AddTransactionModel, AddTransactionEvent, AddTransactionEffect>() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_add_transaction, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        activity?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE)
     }
 
     override fun getMobiusLoop(activity: AppCompatActivity, navController: NavController): AddTransactionLoopBuilder {
@@ -61,10 +68,14 @@ class AddTransactionFragment : MobiusFragment<AddTransactionModel, AddTransactio
                 .debounce(300, TimeUnit.MILLISECONDS)
                 .map { text -> TransactionValueInputChanged(text.toString(), getString(R.string.transaction_value_failed_msg)) }
 
+        val keyActionStream = RxTextView.editorActions(transactionValueInput)
+                .filter { id -> id == EditorInfo.IME_ACTION_DONE || id == EditorInfo.IME_NULL }
+                .map { SaveButtonClicked }
+
         val saveClickStream = RxView.clicks(saveBt)
                 .map { SaveButtonClicked }
 
-        val streams = listOf(nameStream, valueStream, saveClickStream)
+        val streams = listOf(nameStream, valueStream, keyActionStream, saveClickStream)
 
         return Observable.merge(streams)
                 .observeOn(Schedulers.computation())
@@ -83,7 +94,7 @@ class AddTransactionFragment : MobiusFragment<AddTransactionModel, AddTransactio
     override fun render(model: AddTransactionModel) {
         transactionNameInput?.isEnabled = !model.isSaving
         transactionValueInput?.isEnabled = !model.isSaving
-        saveBt?.isEnabled = !model.isSaving
+        saveBt?.isEnabled = model.canSave && !model.isSaving
 
         if (!model.isNameValid && transactionNameInput?.text.toString() != "") transactionNameLayout?.error = model.nameErrMsg
         else transactionNameLayout?.error = null

@@ -4,6 +4,7 @@ import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +12,7 @@ import androidx.navigation.NavController
 import br.com.alissonfpmorais.tiralama.R
 import br.com.alissonfpmorais.tiralama.common.CustomViewModel
 import br.com.alissonfpmorais.tiralama.common.MobiusFragment
+import br.com.alissonfpmorais.tiralama.common.toCurrency
 import br.com.alissonfpmorais.tiralama.main.components.listtransaction.external.TransactionsViewModel
 import br.com.alissonfpmorais.tiralama.main.components.listtransaction.external.transactionsHandler
 import br.com.alissonfpmorais.tiralama.main.components.listtransaction.internal.*
@@ -28,14 +30,12 @@ typealias TransactionsLoopBuilder = MobiusLoop.Builder<TransactionsModel, Transa
 typealias TransactionsLoopController = MobiusLoop.Controller<TransactionsModel, TransactionsEvent>
 
 class TransactionsFragment : MobiusFragment<TransactionsModel, TransactionsEvent, TransactionsEffect>() {
-    private val adapter = TransactionsAdapter()
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_transactions, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        transactionList.adapter = adapter
+        transactionList.adapter = TransactionsAdapter(activity as AppCompatActivity)
         transactionList.setHasFixedSize(true)
         transactionList.layoutManager = LinearLayoutManager(activity)
 
@@ -43,7 +43,7 @@ class TransactionsFragment : MobiusFragment<TransactionsModel, TransactionsEvent
     }
 
     override fun getMobiusLoop(activity: AppCompatActivity, navController: NavController): TransactionsLoopBuilder {
-        return RxMobius.loop(::transactionsUpdate, transactionsHandler(activity, navController, adapter))
+        return RxMobius.loop(::transactionsUpdate, transactionsHandler(activity, navController, transactionList.adapter as TransactionsAdapter))
     }
 
     override fun getMobiusController(loop: TransactionsLoopBuilder): TransactionsLoopController {
@@ -59,6 +59,8 @@ class TransactionsFragment : MobiusFragment<TransactionsModel, TransactionsEvent
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe { model ->
                     if (isViewModelInitialized()) viewModel.setModel(model)
+
+                    Log.d("truta", "renderiza tio!")
                     render(model)
                 }
 
@@ -78,5 +80,11 @@ class TransactionsFragment : MobiusFragment<TransactionsModel, TransactionsEvent
 
     override fun init(model: TransactionsModel) { }
 
-    override fun render(model: TransactionsModel) { }
+    override fun render(model: TransactionsModel) {
+        Log.d("truta", "renderizando")
+
+        totalBalance?.text = model.totalBalance.toCurrency()
+        positiveBalance?.text = model.positiveBalance.toCurrency()
+        negativeBalance?.text = model.negativeBalance.toCurrency()
+    }
 }

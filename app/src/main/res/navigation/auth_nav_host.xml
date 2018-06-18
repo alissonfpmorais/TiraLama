@@ -30,5 +30,5 @@
         android:id="@+id/registerFragment"
         android:name="br.com.alissonfpmorais.tiralama.auth.register.RegisterFragment"
         android:label="fragment_register"
-        tools:layout="@layout/fragment_register" ></fragment>
+        tools:layout="@layout/fragment_register" />
 </navigation>

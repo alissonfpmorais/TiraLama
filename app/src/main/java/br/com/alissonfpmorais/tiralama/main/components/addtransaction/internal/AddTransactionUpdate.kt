@@ -21,9 +21,9 @@ fun addTransactionUpdate(model: AddTransactionModel, event: AddTransactionEvent)
 
 fun isAbleToSave(name: String, value: String, isNameValid: Boolean, isValueValid: Boolean): Boolean {
     val isFieldsValid = isNameValid && isValueValid
-    val isFieldsEmpty = name == "" && value == ""
+    val isFieldsEmpty = name != "" && value != ""
 
-    return isFieldsValid && !isFieldsEmpty
+    return isFieldsValid && isFieldsEmpty
 }
 
 fun onTransactionNameInputChanged(model: AddTransactionModel, name: String, errorMsg: String): NextAddTransaction {

@@ -17,6 +17,9 @@
     <string name="save_button_text">Save</string>
     <string name="transaction_name_hint">Transaction\'s name</string>
     <string name="transaction_value_hint">Transaction\'s value</string>
+    <string name="confirm_delete_msg">Are you sure to delete?</string>
+    <string name="yes_msg">Yes</string>
+    <string name="no_msg">No</string>
 
     <!-- Labels -->
     <string name="categories_label">Categories</string>
@@ -27,11 +30,12 @@
     <string name="add_transaction_label">Add transaction</string>
     <string name="logout_label">Logout</string>
 
-    <!-- Error messages -->
+    <!-- Messages -->
     <string name="username_error_msg">Invalid username</string>
     <string name="password_error_msg">Invalid password</string>
     <string name="confirmation_error_msg">Invalid confirmation password</string>
     <string name="login_failed_msg">Invalid credentials</string>
+    <string name="register_success_msg">Successfully registered</string>
     <string name="register_failed_msg">Impossible to create user</string>
     <string name="category_name_failed_msg">Invalid category name</string>
     <string name="transaction_name_failed_msg">Invalid transaction name</string>

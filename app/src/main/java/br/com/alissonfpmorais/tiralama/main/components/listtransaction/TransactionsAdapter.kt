@@ -1,22 +1,21 @@
 package br.com.alissonfpmorais.tiralama.main.components.listtransaction
 
+import android.app.AlertDialog
+import android.content.Context
 import android.graphics.Color
 import android.support.v7.widget.RecyclerView
-import android.util.Log
+import android.view.ContextThemeWrapper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import br.com.alissonfpmorais.tiralama.R
+import br.com.alissonfpmorais.tiralama.common.data.local.DatabaseHolder
 import br.com.alissonfpmorais.tiralama.common.data.local.entity.Transaction
+import br.com.alissonfpmorais.tiralama.common.toCurrency
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item_transaction.*
-import kotlinx.android.synthetic.main.item_transaction.view.*
-import java.math.BigDecimal
-import java.text.NumberFormat
-import java.util.*
 
-class TransactionsAdapter : RecyclerView.Adapter<TransactionsAdapter.ViewHolder>() {
+class TransactionsAdapter(val context: Context) : RecyclerView.Adapter<TransactionsAdapter.ViewHolder>() {
     var data: List<Transaction> = listOf()
         set(value) {
             field = value
@@ -38,14 +37,25 @@ class TransactionsAdapter : RecyclerView.Adapter<TransactionsAdapter.ViewHolder>
         val color = if (transaction.value >= 0) Color.GREEN else Color.RED
         val name = transaction.name
         val date = transaction.date.toString()
-        val value = BigDecimal(transaction.value.toDouble())
+        val value = transaction.value.toCurrency()
 
         holder.transactionColor.setBackgroundColor(color)
         holder.transactionName.text = name
         holder.transactionDate.text = date
-        holder.transactionValue.text = NumberFormat.getCurrencyInstance(Locale("pt", "BR")).format(value)
-        holder.containerView.deleteBt.setOnClickListener {
-            Log.d("truta", "containerView funciona!")
+        holder.transactionValue.text = value
+
+        holder.deleteBt.setOnClickListener {
+            AlertDialog.Builder(ContextThemeWrapper(context, R.style.AppTheme_ConfirmationDialog))
+                    .setMessage(R.string.confirm_delete_msg)
+                    .setCancelable(true)
+                    .setPositiveButton(R.string.yes_msg) { _, _ ->
+                        DatabaseHolder.getSingleInstance(context)
+                                .subscribe { database -> database.transactionDao().deleteTransaction(transaction) }
+                                .dispose()
+                    }
+                    .setNegativeButton(R.string.no_msg) { _, _ -> }
+                    .create()
+                    .show()
         }
     }
 

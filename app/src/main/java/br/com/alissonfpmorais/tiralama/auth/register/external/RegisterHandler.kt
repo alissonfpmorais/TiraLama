@@ -39,6 +39,8 @@ fun onAttemptToRegister(activity: AppCompatActivity, username: String, password:
                 if (id >= 0) RegisterSuccessful
                 else RegisterFailed(activity.getString(R.string.register_failed_msg))
             }
+            .observeOn(AndroidSchedulers.mainThread())
+            .doOnSuccess { event -> if (event === RegisterSuccessful) activity.makeToast(activity.getString(R.string.register_success_msg)) }
             .toObservable()
 }
 
